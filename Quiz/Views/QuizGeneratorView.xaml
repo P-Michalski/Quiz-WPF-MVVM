@@ -1,0 +1,42 @@
+﻿<Window x:Class="Quiz.Views.QuizGeneratorView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Quiz.Views"
+        mc:Ignorable="d"
+        Title="Widok Tworzenia Quizu" Height="400" Width="600">
+    <Grid>
+        <StackPanel>
+            <TextBox Text="{Binding QuizName}" Margin="10" />
+            <ItemsControl ItemsSource="{Binding Questions}" Margin="10">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBox Text="{Binding Text}" Margin="5" />
+                            <ListBox ItemsSource="{Binding Answers}" Margin="5">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBox Text="{Binding Text}" Width="200" />
+                                            <Button Content="Usuń" Command="{Binding DataContext.RemoveAnswerCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
+                                            <CheckBox Content="Poprawna" IsChecked="{Binding IsCorrect}" 
+                                                Command="{Binding DataContext.ToggleCorrectAnswerCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                                CommandParameter="{Binding}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <Button Content="Dodaj odpowiedź" Command="{Binding DataContext.AddAnswerCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
+                            <Button Content="Usuń pytanie" Command="{Binding DataContext.RemoveQuestionCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Content="Dodaj pytanie" Command="{Binding AddQuestionCommand}" Margin="10" />
+            <Button Content="Zapisz quiz" Command="{Binding SaveQuizCommand}" Margin="10" />
+            <Button Content="Wczytaj quiz" Command="{Binding LoadQuizCommand}" Margin="10" />
+            <Button Content="Powrót" Command="{Binding NavigateBackCommand}" Margin="10" />
+        </StackPanel>
+    </Grid>
+</Window>
