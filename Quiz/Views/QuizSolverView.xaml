@@ -6,11 +6,57 @@
         xmlns:local="clr-namespace:Quiz.Views"
         mc:Ignorable="d"
         Title="Rozwiązywanie Quizu" Height="400" Width="600">
-    <Grid>
-        <StackPanel>
-            <TextBlock Text="Widok Rozwiązywania Quizu" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" />
-            <ItemsControl ItemsSource="{Binding Questions}" />
-            <Button Content="Menu" Command="{Binding NavigateBackCommand}" HorizontalAlignment="Center" Margin="10" />
-        </StackPanel>
+
+    <Grid Margin="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="question" Grid.Row="0" Grid.Column="0" Text="Question 1"/>
+            <StackPanel  Grid.Row="0" Grid.Column="1" >
+                <Button Content="Menu" Command="{Binding NavigateBackCommand}" HorizontalAlignment="Center" Margin="10" />
+                <TextBlock x:Name="title" Text="Title"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.Column="0">
+                <RadioButton x:Name="answer1" Content="Answer1"/>
+                <RadioButton x:Name="answer2" Content="Answer2"/>
+                <RadioButton x:Name="answer3" Content="Answer3"/>
+                <RadioButton x:Name="answer4" Content="Answer4"/>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                    <!-- Dodaj tutaj elementy do wyświetlenia w liście -->
+                    <TextBlock Text="Element 1" Margin="5" />
+                    <TextBlock Text="Element 2" Margin="5" />
+                    <TextBlock Text="Element 3" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <TextBlock Text="Element 4" Margin="5" />
+                    <!-- Możesz dodać więcej elementów -->
+                </StackPanel>
+            </ScrollViewer>
+
+        </Grid>
     </Grid>
+
 </Window>
