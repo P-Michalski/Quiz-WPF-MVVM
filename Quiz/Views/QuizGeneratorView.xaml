@@ -6,37 +6,179 @@
         xmlns:local="clr-namespace:Quiz.Views"
         mc:Ignorable="d"
         Title="Widok Tworzenia Quizu" Height="400" Width="600">
-    <Grid>
-        <StackPanel>
-            <TextBox Text="{Binding QuizName}" Margin="10" />
-            <ItemsControl ItemsSource="{Binding Questions}" Margin="10">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBox Text="{Binding Text}" Margin="5" />
-                            <ListBox ItemsSource="{Binding Answers}" Margin="5">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBox Text="{Binding Text}" Width="200" />
-                                            <Button Content="Usuń" Command="{Binding DataContext.RemoveAnswerCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
-                                            <CheckBox Content="Poprawna" IsChecked="{Binding IsCorrect}" 
-                                                Command="{Binding DataContext.ToggleCorrectAnswerCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
-                                                CommandParameter="{Binding}" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                            <Button Content="Dodaj odpowiedź" Command="{Binding DataContext.AddAnswerCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
-                            <Button Content="Usuń pytanie" Command="{Binding DataContext.RemoveQuestionCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <Button Content="Dodaj pytanie" Command="{Binding AddQuestionCommand}" Margin="10" />
-            <Button Content="Zapisz quiz" Command="{Binding SaveQuizCommand}" Margin="10" />
-            <Button Content="Wczytaj quiz" Command="{Binding LoadQuizCommand}" Margin="10" />
-            <Button Content="Powrót" Command="{Binding NavigateBackCommand}" Margin="10" />
-        </StackPanel>
-    </Grid>
+    <Window.Resources>
+        <!-- Styl dla przycisków Zapisz quiz i Wczytaj quiz -->
+        <Style x:Key="PurpleButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#6A0DAD" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="BorderBrush" Value="#4B0082" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#7B1FA2" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#4B0082" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Styl dla przycisku Powrót -->
+        <Style x:Key="RedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#8B0000" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="BorderBrush" Value="#5A0000" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#A00000" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#5A0000" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Styl dla przycisków Usuń w jaśniejszym czerwonym -->
+        <Style x:Key="LightRedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF6347" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="BorderBrush" Value="#CD5C5C" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF7F7F" />
+                                <!-- Jaśniejszy odcień -->
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#CD5C5C" />
+                                <!-- IndianRed -->
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Styl dla przycisku Dodaj pytanie -->
+        <Style x:Key="WhiteButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F0F0F0" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="Gray" />
+                                <Setter Property="Foreground" Value="White" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <StackPanel>
+                <TextBox Text="{Binding QuizName}" Margin="10" Height="40" FontSize="16" />
+                <!-- Lista pytań -->
+                <ItemsControl ItemsSource="{Binding Questions}" Margin="10">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBox Text="{Binding Text}" Margin="5" />
+                                <ListBox ItemsSource="{Binding Answers}" Margin="5">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="5" VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBox Text="{Binding Text}" Grid.Column="0" VerticalAlignment="Center" Margin="5" />
+                                                <Button Content="Usuń" Grid.Column="1" VerticalAlignment="Center" Margin="5" Command="{Binding DataContext.RemoveAnswerCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                                        CommandParameter="{Binding}" Style="{StaticResource LightRedButtonStyle}" />
+                                                <CheckBox Content="Poprawna" Grid.Column="2" VerticalAlignment="Center" Margin="5" IsChecked="{Binding IsCorrect}" 
+                                                    Command="{Binding DataContext.ToggleCorrectAnswerCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                                    CommandParameter="{Binding}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <Button Content="Dodaj odpowiedź" Command="{Binding DataContext.AddAnswerCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Style="{StaticResource WhiteButtonStyle}" />
+                                <Button Content="Usuń pytanie" Command="{Binding DataContext.RemoveQuestionCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Style="{StaticResource LightRedButtonStyle}" />
+
+                                <Separator Height="15"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <!-- Przyciski na dole -->
+                <Button Content="Dodaj pytanie" Command="{Binding AddQuestionCommand}" Margin="10" Width="150" Style="{StaticResource WhiteButtonStyle}" />
+                <Button Content="Zapisz quiz" Command="{Binding SaveQuizCommand}" Margin="10" Width="150" Style="{StaticResource PurpleButtonStyle}" />
+                <Button Content="Wczytaj quiz" Command="{Binding LoadQuizCommand}" Margin="10" Width="150" Style="{StaticResource PurpleButtonStyle}" />
+                <Button Content="Powrót" Command="{Binding NavigateBackCommand}" Margin="10" Width="150" Style="{StaticResource RedButtonStyle}" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Window>

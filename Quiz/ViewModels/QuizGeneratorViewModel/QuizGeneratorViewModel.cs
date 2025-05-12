@@ -80,13 +80,7 @@ namespace Quiz.ViewModels {
 
         private void ToggleCorrectAnswer(Answer answer) {
             if (answer != null) {
-                foreach (var question in Questions) {
-                    if (question.Answers.Contains(answer)) {
-                        answer.IsCorrect = !answer.IsCorrect;
-                        OnPropertyChanged(nameof(Questions));
-                        break;
-                    }
-                }
+                OnPropertyChanged(nameof(Questions));                 
             }
         }
 
