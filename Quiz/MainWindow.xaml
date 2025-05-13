@@ -10,10 +10,46 @@
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#FFF4D6A3"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="BorderBrush" Value="#FFD89A3C"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFFFE0B2"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FFEF9A3A"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFFFCC80"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FFF57C00"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Wybierz opcję:" FontSize="20" HorizontalAlignment="Center" />
-            <Button Content="Tworzenie Quizu" Command="{Binding NavigateToQuizGeneratorCommand}" Width="200" Height="50" />
+            <Button Content="Tworzenie Quizu" Command="{Binding NavigateToQuizGeneratorCommand}" Width="200" Height="50" Margin="20"/>
             <Button Content="Rozwiązywanie Quizu" Command="{Binding NavigateToQuizSolverCommand}" Width="200" Height="50" />
         </StackPanel>
     </Grid>
