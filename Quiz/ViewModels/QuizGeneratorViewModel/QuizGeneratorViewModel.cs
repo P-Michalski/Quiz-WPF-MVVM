@@ -101,6 +101,26 @@ namespace Quiz.ViewModels {
 
         private void SaveQuiz() {
             try {
+                var questionWithoutAnswers = Questions.FirstOrDefault(q => q.Answers == null || q.Answers.Count == 0);
+                if (questionWithoutAnswers != null) {
+                    MessageBox.Show(
+                        $"Pytanie \"{questionWithoutAnswers.Text}\" nie ma żadnej odpowiedzi.\nUzupełnij odpowiedzi przed zapisem quizu.",
+                        "Błąd walidacji",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
+                var questionWithoutCorrect = Questions.FirstOrDefault(q => q.Answers == null || !q.Answers.Any(a => a.IsCorrect));
+                if (questionWithoutCorrect != null) {
+                    MessageBox.Show(
+                        $"Pytanie \"{questionWithoutCorrect.Text}\" nie ma żadnej poprawnej odpowiedzi.\nZaznacz przynajmniej jedną odpowiedź jako poprawną.",
+                        "Błąd walidacji",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return;
+                }
+
                 var quiz = new QuizModel {
                     Name = QuizName,
                     Questions = Questions
