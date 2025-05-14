@@ -7,7 +7,6 @@
         mc:Ignorable="d"
         Title="Widok Tworzenia Quizu" Height="400" Width="600">
     <Window.Resources>
-        <!-- Styl dla przycisków Zapisz quiz i Wczytaj quiz -->
         <Style x:Key="PurpleButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#6A0DAD" />
             <Setter Property="Foreground" Value="White" />
@@ -38,7 +37,6 @@
             </Setter>
         </Style>
 
-        <!-- Styl dla przycisku Powrót -->
         <Style x:Key="RedButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#8B0000" />
             <Setter Property="Foreground" Value="White" />
@@ -69,7 +67,6 @@
             </Setter>
         </Style>
 
-        <!-- Styl dla przycisków Usuń w jaśniejszym czerwonym -->
         <Style x:Key="LightRedButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF6347" />
             <Setter Property="Foreground" Value="White" />
@@ -90,11 +87,9 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#FF7F7F" />
-                                <!-- Jaśniejszy odcień -->
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter Property="Background" Value="#CD5C5C" />
-                                <!-- IndianRed -->
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -102,7 +97,6 @@
             </Setter>
         </Style>
 
-        <!-- Styl dla przycisku Dodaj pytanie -->
         <Style x:Key="WhiteButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="White" />
             <Setter Property="Foreground" Value="Black" />
@@ -138,7 +132,8 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
             <StackPanel>
-                <TextBox Text="{Binding QuizName}" Margin="10" Height="40" FontSize="16" />
+                <Label Content="Nazwa Quizu:" FontWeight="Bold" FontFamily="monospace" />
+                <TextBox Text="{Binding QuizName}" Margin="10 0 10 0" Height="40" FontSize="16" />
                 <!-- Lista pytań -->
                 <ItemsControl ItemsSource="{Binding Questions}" Margin="10">
                     <ItemsControl.ItemTemplate>

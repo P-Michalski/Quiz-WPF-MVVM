@@ -57,7 +57,15 @@ namespace Quiz.ViewModels {
 
         private void RemoveQuestion(Question question) {
             if (question != null) {
-                Questions.Remove(question);
+                var result = MessageBox.Show(
+                    "Czy na pewno chcesz usunąć to pytanie?",
+                    "Potwierdzenie usunięcia",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes) {
+                    Questions.Remove(question);
+                }
             }
         }
 
@@ -69,10 +77,17 @@ namespace Quiz.ViewModels {
 
         private void RemoveAnswerByAnswer(Answer answer) {
             if (answer != null) {
-                foreach (var question in Questions) {
-                    if (question.Answers.Contains(answer)) {
-                        question.Answers.Remove(answer);
-                        break;
+                var result = MessageBox.Show(
+                    "Czy na pewno chcesz usunąć tę odpowiedź?",
+                    "Potwierdzenie usunięcia",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes) {
+                    foreach (var question in Questions) {
+                        if (question.Answers.Contains(answer)) {
+                            question.Answers.Remove(answer);
+                            break;
+                        }
                     }
                 }
             }
@@ -129,7 +144,15 @@ namespace Quiz.ViewModels {
         }
 
         private void NavigateBack() {
-            _navigationService.NavigateBackToMainWindow("QuizGeneratorView");
+            var result = MessageBox.Show(
+                    "Czy na pewno chcesz wrócić do menu?\n" +
+                    "Upewnij się, że zapisałeś quiz przed powrotem do Menu.",
+                    "Potwierdzenie powrotu",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes) {
+                _navigationService.NavigateBackToMainWindow("QuizGeneratorView");
+            }
         }
     }
 }
