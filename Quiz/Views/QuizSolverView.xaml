@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Quiz.Views.QuizSolverView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:Quiz.Models"
+        xmlns:local="clr-namespace:Quiz.Converters"
         Title="Rozwiązywanie Quizu" Height="400" Width="600"
         DataContext="{Binding QuizSolverViewModel}">
     <Window.Resources>
