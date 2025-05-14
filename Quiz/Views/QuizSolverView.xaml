@@ -1,10 +1,12 @@
 ﻿<Window x:Class="Quiz.Views.QuizSolverView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Quiz.Models"
         Title="Rozwiązywanie Quizu" Height="400" Width="600"
         DataContext="{Binding QuizSolverViewModel}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <local:InverseBoolConverter x:Key="InverseBoolConverter" />
     </Window.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -18,8 +20,15 @@
         </Grid.ColumnDefinitions>
 
         <!-- Lewy górny róg: pytanie -->
-        <TextBlock Text="{Binding CurrentQuestion.Text}" FontSize="16" FontWeight="Bold" Grid.Row="0" Grid.Column="0"/>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="1*"/>
 
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="{Binding CurrentQuestion.Text}" FontSize="16" FontWeight="Bold" Grid.Column="0"/>
+            <TextBlock Text="{Binding ElapsedTimeString}" FontSize="16" Grid.Column="1" />
+        </Grid>
         <!-- Prawy górny róg: przycisk nawigacji + tytuł quizu -->
         <StackPanel Orientation="vertical" Grid.Row="0" Grid.Column="1">
             <Grid>
@@ -38,41 +47,43 @@
             <ItemsControl ItemsSource="{Binding CurrentAnswers}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <CheckBox Content="{Binding Text}" IsChecked="{Binding IsSelected, Mode=TwoWay}"/>
+                        <CheckBox Content="{Binding Text}" 
+                                  IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                  IsEnabled="{Binding DataContext.IsQuizLocked, 
+                                                      RelativeSource={RelativeSource AncestorType=Window}, 
+                                                      Converter={StaticResource InverseBoolConverter}}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Content="Następne" Command="{Binding NextQuestionCommand}" Margin="10" Visibility="{Binding IsQuizLoaded, Converter={StaticResource BoolToVisConverter}}"/>
+            <Button Content="Następne" Command="{Binding NextQuestionCommand}" Margin="10" 
+                    Visibility="{Binding IsQuizLoaded, Converter={StaticResource BoolToVisConverter}}"/>
         </StackPanel>
 
-        <Grid  Grid.Row="1" Grid.Column="1">
+        <!-- Prawy dolny róg: lista pytań oraz przycisk zakończenia quizu -->
+        <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="6*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-        
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding quiz.Questions}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding quiz.Questions}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
                             <TextBlock Text="{Binding Text}" Margin="5">
                                 <TextBlock.InputBindings>
                                     <MouseBinding Command="{Binding DataContext.SelectQuestionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                      CommandParameter="{Binding}" 
-                                      MouseAction="LeftClick"/>
+                                                  CommandParameter="{Binding}" 
+                                                  MouseAction="LeftClick"/>
                                 </TextBlock.InputBindings>
                             </TextBlock>
                         </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
 
-        <!-- Przycisk zakończenia quizu -->
-            <Button Content="Zakończ Quiz" Command="{Binding EndQuizCommand}" Grid.Row="1" Grid.Column="1" Margin="10" Visibility="{Binding IsQuizLoaded, Converter={StaticResource BoolToVisConverter}}"/>
+            <Button Content="Zakończ Quiz" Command="{Binding EndQuizCommand}" Grid.Row="1" Margin="10" 
+                    Visibility="{Binding IsQuizLoaded, Converter={StaticResource BoolToVisConverter}}"/>
         </Grid>
     </Grid>
 </Window>
-
-
-
-<!-- Prawy dolny róg: lista wszystkich pytań -->
